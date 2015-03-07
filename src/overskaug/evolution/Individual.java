@@ -1,7 +1,6 @@
 package overskaug.evolution;
 
 import overskaug.evolution.genotypes.BitVectorGenotype;
-import overskaug.evolution.genotypes.Genotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.util.Converter;
 
