@@ -1,6 +1,6 @@
 package overskaug.evolution.selection;
 
-import overskaug.evolution.Individual;
+import overskaug.evolution.population.Individual;
 
 import java.util.NavigableMap;
 import java.util.Random;

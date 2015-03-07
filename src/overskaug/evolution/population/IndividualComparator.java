@@ -1,4 +1,4 @@
-package overskaug.evolution;
+package overskaug.evolution.population;
 
 import java.util.Comparator;
 

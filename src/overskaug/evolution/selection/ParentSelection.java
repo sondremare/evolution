@@ -1,8 +1,8 @@
 package overskaug.evolution.selection;
 
-import overskaug.evolution.Individual;
+import overskaug.evolution.population.BitVectorIndividual;
+import overskaug.evolution.population.Individual;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.NavigableMap;
 import java.util.TreeMap;

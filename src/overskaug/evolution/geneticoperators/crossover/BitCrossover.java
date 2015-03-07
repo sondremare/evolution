@@ -1,9 +1,9 @@
 package overskaug.evolution.geneticoperators.crossover;
 
-import overskaug.evolution.Individual;
 import overskaug.evolution.geneticoperators.UnsupportedGeneticOperationException;
 import overskaug.evolution.genotypes.BitVectorGenotype;
-import overskaug.evolution.genotypes.Genotype;
+import overskaug.evolution.population.BitVectorIndividual;
+import overskaug.evolution.population.Individual;
 import overskaug.evolution.util.FixedBitSet;
 
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class BitCrossover implements Crossover {
                 child2Genes.or(parent2first);
                 child2Genes.or(parent1second);
 
-                children.add(new Individual(new BitVectorGenotype(child1Genes)));
-                children.add(new Individual(new BitVectorGenotype(child2Genes)));
+                children.add(new BitVectorIndividual(new BitVectorGenotype(child1Genes)));
+                children.add(new BitVectorIndividual(new BitVectorGenotype(child2Genes)));
             } else {
                 children.add(parent1);
                 children.add(parent2);

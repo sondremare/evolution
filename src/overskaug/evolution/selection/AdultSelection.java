@@ -1,7 +1,7 @@
 package overskaug.evolution.selection;
 
-import overskaug.evolution.Individual;
-import overskaug.evolution.IndividualComparator;
+import overskaug.evolution.population.Individual;
+import overskaug.evolution.population.IndividualComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import overskaug.evolution.Evolution;
 import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
+import overskaug.evolution.problems.OneMax;
 import overskaug.evolution.util.Converter;
 import overskaug.evolution.util.FixedBitSet;
 
@@ -26,6 +27,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        Evolution.run();
+        OneMax oneMax = new OneMax(Evolution.BIT_LENGTH);
+        Evolution.run(oneMax);
     }
 }

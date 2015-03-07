@@ -1,32 +1,28 @@
 package overskaug.evolution;
 
-import overskaug.evolution.fitness.SumIntegerDiffFitness;
-import overskaug.evolution.fitness.SumOfSquaresFitness;
+import overskaug.evolution.fitness.Fitness;
 import overskaug.evolution.geneticoperators.UnsupportedGeneticOperationException;
-import overskaug.evolution.geneticoperators.crossover.BitCrossover;
-import overskaug.evolution.geneticoperators.mutation.BitMutation;
-import overskaug.evolution.genotypes.BitVectorGenotype;
+import overskaug.evolution.geneticoperators.crossover.Crossover;
+import overskaug.evolution.geneticoperators.mutation.Mutation;
+import overskaug.evolution.population.Individual;
+import overskaug.evolution.population.Population;
+import overskaug.evolution.problems.Problem;
 import overskaug.evolution.selection.AdultSelection;
 import overskaug.evolution.selection.ParentSelection;
 import overskaug.evolution.selection.RouletteWheel;
-import overskaug.evolution.util.Converter;
-import overskaug.evolution.util.FixedBitSet;
 
 import java.util.ArrayList;
 
 public class Evolution {
     public static int MAXIMUM_POOL_SIZE = 20;
-    public static int BIT_LENGTH = 20;
-    public static int MAX_GENERATIONS = 500;
+    public static int BIT_LENGTH = 40;
+    public static int MAX_GENERATIONS = 1500;
     public static double CROSSOVER_RATE = 1;
     public static double MUTATION_CHANCE = 0.05;
 
-    public static void run() {
-        Population population = new Population(MAXIMUM_POOL_SIZE, BIT_LENGTH);
-        FixedBitSet solutionBitSet = new FixedBitSet(BIT_LENGTH);
-        solutionBitSet.set(0, BIT_LENGTH);
-        BitVectorGenotype solution = new BitVectorGenotype(solutionBitSet);
-        SumOfSquaresFitness fitness = new SumOfSquaresFitness(Converter.convertToPhenotype(solution, 3)); //TODO FIX 3
+    public static void run(Problem problem) {
+        Population population = problem.getPopulation();
+        Fitness fitness = problem.getFitness();
         int generations = 0;
         while (generations < MAX_GENERATIONS && fitness.getThreshold() > getBestFitness(population.getAdults())) {
             for (Individual individual : population.getChildren()) {
@@ -37,8 +33,7 @@ public class Evolution {
 
             RouletteWheel rouletteWheel = ParentSelection.fitnessProportionate(population.getAdults());
             //TODO add other selections
-            BitCrossover crossover = new BitCrossover();
-
+            Crossover crossover = problem.getCrossover();
 
             //Sexual reproduction
             for (int i = 0; i < (double)MAXIMUM_POOL_SIZE / 2; i++) {
@@ -52,16 +47,11 @@ public class Evolution {
                 }
             }
 
-            //Asexual reproduction
-            for (int j = 0; j < MAXIMUM_POOL_SIZE / 2; j++) {
-
-            }
-
             //Mutation
-            BitMutation bitMutation = new BitMutation();
+            Mutation mutation = problem.getMutation();
             for (Individual child : population.getChildren()) {
                 try {
-                    bitMutation.mutate(child.getGenotype(), MUTATION_CHANCE);
+                    mutation.mutate(child.getGenotype(), MUTATION_CHANCE);
                 } catch (UnsupportedGeneticOperationException e) {
                     System.err.println(e.getMessage());
                 }

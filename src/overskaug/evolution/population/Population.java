@@ -1,4 +1,4 @@
-package overskaug.evolution;
+package overskaug.evolution.population;
 
 import java.util.ArrayList;
 
@@ -6,13 +6,9 @@ public class Population {
 
     private ArrayList<Individual> adults = new ArrayList<Individual>();
     private ArrayList<Individual> children = new ArrayList<Individual>();
-    private int populationSize;
 
-    public Population(int populationSize, int bitLength) {
-        this.populationSize = populationSize;
-        for (int i = 0; i < populationSize; i++) {
-            children.add(new Individual(bitLength));
-        }
+    public void addIndividual(Individual individual) {
+        children.add(individual);
     }
 
     public ArrayList<Individual> getAdults() {

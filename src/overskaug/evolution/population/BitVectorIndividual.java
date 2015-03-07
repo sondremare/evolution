@@ -1,34 +1,36 @@
-package overskaug.evolution;
+package overskaug.evolution.population;
 
 import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.util.Converter;
 
-public class Individual {
+public class BitVectorIndividual implements Individual {
 
     private BitVectorGenotype genotype;
     private IntegerPhenotype phenotype;
     private double fitness = Integer.MAX_VALUE;
-    private int BITS_PER_INTEGER = 3;
 
-    public Individual(int bitLength) {
+    public BitVectorIndividual(int bitLength) {
         this.genotype = new BitVectorGenotype(bitLength);
-        this.phenotype = Converter.convertToPhenotype(genotype, BITS_PER_INTEGER);
+        this.phenotype = Converter.convertToPhenotype(genotype);
     }
 
-    public Individual(BitVectorGenotype genotype) {
+    public BitVectorIndividual(BitVectorGenotype genotype) {
         this.genotype = genotype;
-        this.phenotype = Converter.convertToPhenotype(genotype, BITS_PER_INTEGER);
+        this.phenotype = Converter.convertToPhenotype(genotype);
     }
 
+    @Override
     public double getFitness() {
         return fitness;
     }
 
+    @Override
     public void setFitness(double fitness) {
         this.fitness = fitness;
     }
 
+    @Override
     public BitVectorGenotype getGenotype() {
         return genotype;
     }
@@ -37,6 +39,7 @@ public class Individual {
         this.genotype = genotype;
     }
 
+    @Override
     public IntegerPhenotype getPhenotype() {
         return phenotype;
     }

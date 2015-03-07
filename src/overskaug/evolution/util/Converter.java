@@ -4,23 +4,24 @@ import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 
 public class Converter {
 
-    public static IntegerPhenotype convertToPhenotype(BitVectorGenotype genotype, int bitsPerInteger) {
+    public static int BITS_PER_INTEGER = 3;
+
+    public static IntegerPhenotype convertToPhenotype(BitVectorGenotype genotype) {
         FixedBitSet genes = genotype.getGenes();
         int shift = genes.length() - 1;
         ArrayList<Integer> integers = new ArrayList<Integer>();
         while (shift > 0) {
             int value = 0;
             int bit = 0;
-            for (int j = shift; j > ((shift - bitsPerInteger) >= 0 ? shift - bitsPerInteger : -1); j--) {
+            for (int j = shift; j > ((shift - BITS_PER_INTEGER) >= 0 ? shift - BITS_PER_INTEGER : -1); j--) {
                 value += genes.get(j) ? (1 << bit) : 0;
                 bit++;
             }
             integers.add(value);
-            shift -= bitsPerInteger;
+            shift -= BITS_PER_INTEGER;
         }
 
         return new IntegerPhenotype(integers);

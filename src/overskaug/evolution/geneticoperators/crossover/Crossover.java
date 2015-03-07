@@ -1,8 +1,7 @@
 package overskaug.evolution.geneticoperators.crossover;
 
-import overskaug.evolution.Individual;
 import overskaug.evolution.geneticoperators.UnsupportedGeneticOperationException;
-import overskaug.evolution.genotypes.Genotype;
+import overskaug.evolution.population.Individual;
 
 import java.util.ArrayList;
 
