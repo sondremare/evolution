@@ -1,5 +1,6 @@
 package overskaug.evolution.geneticoperators.crossover;
 
+import overskaug.evolution.Individual;
 import overskaug.evolution.geneticoperators.UnsupportedGeneticOperationException;
 import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.genotypes.Genotype;
@@ -11,13 +12,13 @@ import java.util.Random;
 public class BitCrossover implements Crossover {
 
     @Override
-    public ArrayList<Genotype> onePointCrossover(Genotype parent1, Genotype parent2, double crossoverRate) throws UnsupportedGeneticOperationException {
-        if (parent1 instanceof BitVectorGenotype && parent2 instanceof BitVectorGenotype) {
+    public ArrayList<Individual> onePointCrossover(Individual parent1, Individual parent2, double crossoverRate) throws UnsupportedGeneticOperationException {
+        if (parent1.getGenotype() instanceof BitVectorGenotype && parent2.getGenotype() instanceof BitVectorGenotype) {
             Random random = new Random();
-            ArrayList<Genotype> children = new ArrayList<Genotype>();
-            if (crossoverRate <= random.nextDouble()) {
-                BitVectorGenotype bitVectorGenotypeParent1 = (BitVectorGenotype) parent1;
-                BitVectorGenotype bitVectorGenotypeParent2 = (BitVectorGenotype) parent2;
+            ArrayList<Individual> children = new ArrayList<Individual>();
+            if (crossoverRate >= random.nextDouble()) {
+                BitVectorGenotype bitVectorGenotypeParent1 = (BitVectorGenotype) parent1.getGenotype();
+                BitVectorGenotype bitVectorGenotypeParent2 = (BitVectorGenotype) parent2.getGenotype();
                 FixedBitSet parent1Genes = bitVectorGenotypeParent1.getGenes();
                 FixedBitSet parent2Genes = bitVectorGenotypeParent2.getGenes();
                 int bitLength = parent1Genes.length();
@@ -39,8 +40,8 @@ public class BitCrossover implements Crossover {
                 child2Genes.or(parent2first);
                 child2Genes.or(parent1second);
 
-                children.add(new BitVectorGenotype(child1Genes));
-                children.add(new BitVectorGenotype(child2Genes));
+                children.add(new Individual(new BitVectorGenotype(child1Genes)));
+                children.add(new Individual(new BitVectorGenotype(child2Genes)));
             } else {
                 children.add(parent1);
                 children.add(parent2);

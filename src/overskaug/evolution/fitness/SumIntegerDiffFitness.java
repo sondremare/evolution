@@ -4,11 +4,11 @@ import overskaug.evolution.phenotypes.Phenotype;
 
 import java.util.ArrayList;
 
-public class SumOfSquaresFitness implements Fitness {
+public class SumIntegerDiffFitness implements Fitness {
     private final double BEST_FITNESS = 1.0;
     private Phenotype solution;
 
-    public SumOfSquaresFitness(Phenotype solution) {
+    public SumIntegerDiffFitness(Phenotype solution) {
         this.solution = solution;
     }
 
@@ -19,16 +19,16 @@ public class SumOfSquaresFitness implements Fitness {
 
     @Override
     public double calculateFitness(Phenotype current) {
-        double fitness = 1 / (1 + sumOfSquares(current));
+        double fitness = 1 / (1 + sumIntegerDiff(current));
         return fitness;
     }
 
-    public double sumOfSquares(Phenotype current) {
+    public double sumIntegerDiff(Phenotype current) {
         ArrayList<Integer> currentPhenotype = current.getPhenotype();
         ArrayList<Integer> solutionPhenotype = solution.getPhenotype();
         double sum = 0;
         for (int i = 0; i < currentPhenotype.size(); i++) {
-            sum += Math.pow(currentPhenotype.get(i) - solutionPhenotype.get(i), 2);
+            sum += Math.abs(currentPhenotype.get(i) - solutionPhenotype.get(i));
         }
         return sum;
     }

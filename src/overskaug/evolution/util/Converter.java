@@ -15,7 +15,7 @@ public class Converter {
         while (shift > 0) {
             int value = 0;
             int bit = 0;
-            for (int j = shift; j > ((shift - bitsPerInteger) >= 0 ? shift - bitsPerInteger : 0); j--) {
+            for (int j = shift; j > ((shift - bitsPerInteger) >= 0 ? shift - bitsPerInteger : -1); j--) {
                 value += genes.get(j) ? (1 << bit) : 0;
                 bit++;
             }

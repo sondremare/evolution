@@ -15,4 +15,13 @@ public class FixedBitSet extends BitSet {
     public int length() {
         return fixedLength;
     }
+
+    @Override
+    public String toString() {
+        String output = "";
+        for (int i = 0; i < length(); i++) {
+            output += get(i) ? "1" : "0";
+        }
+        return output;
+    }
 }

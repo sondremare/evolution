@@ -29,4 +29,9 @@ public class AdultSelection {
         }
         return bestIndividuals;
     }
+
+    public static Individual getBestIndividual(ArrayList<Individual> individuals) {
+        Collections.sort(individuals, new IndividualComparator());
+        return individuals.get(0);
+    }
 }

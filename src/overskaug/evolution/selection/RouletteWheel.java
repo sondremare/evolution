@@ -15,6 +15,7 @@ public class RouletteWheel {
     }
 
     public Individual nextParent() {
-        return rouletteWheel.ceilingEntry(random.nextDouble()).getValue();
+        double randomDouble = random.nextDouble();
+        return rouletteWheel.ceilingEntry(randomDouble).getValue();
     }
 }

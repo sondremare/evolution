@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import overskaug.evolution.Evolution;
 import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.util.Converter;
+import overskaug.evolution.util.FixedBitSet;
 
 import java.util.BitSet;
 
@@ -24,7 +26,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        BitVectorGenotype genotype = new BitVectorGenotype(8);
-        IntegerPhenotype test  = Converter.convertToPhenotype(genotype, 3);
+        Evolution.run();
     }
 }

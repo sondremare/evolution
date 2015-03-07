@@ -14,7 +14,7 @@ public class BitMutation implements Mutation {
             BitVectorGenotype bitVectorGenotype = (BitVectorGenotype) genotype;
             FixedBitSet genes = bitVectorGenotype.getGenes();
             Random random = new Random();
-            if (chance <= random.nextDouble()) {
+            if (chance >= random.nextDouble()) {
                 int geneNumber = random.nextInt(genes.length());
                 genes.set(geneNumber, !genes.get(geneNumber));
             }
