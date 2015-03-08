@@ -13,7 +13,7 @@ public class SumIntegerDiffFitness implements Fitness {
     }
 
     @Override
-    public double getThreshold() {
+    public double getOptimalFitness() {
         return BEST_FITNESS;
     }
 

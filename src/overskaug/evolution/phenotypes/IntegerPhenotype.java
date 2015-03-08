@@ -12,4 +12,13 @@ public class IntegerPhenotype implements Phenotype {
     public ArrayList<Integer> getPhenotype() {
         return phenotype;
     }
+
+    @Override
+    public String toString() {
+        String output = "";
+        for (Integer integer : phenotype) {
+            output += integer;
+        }
+        return output;
+    }
 }

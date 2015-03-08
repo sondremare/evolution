@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import overskaug.evolution.Evolution;
 import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
+import overskaug.evolution.problems.LOLZPrefix;
 import overskaug.evolution.problems.OneMax;
 import overskaug.evolution.util.Converter;
 import overskaug.evolution.util.FixedBitSet;
@@ -27,7 +28,9 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        OneMax oneMax = new OneMax(Evolution.BIT_LENGTH);
-        Evolution.run(oneMax);
+        int bitLength = 40;
+        OneMax problem = new OneMax(bitLength);
+        //LOLZPrefix problem = new LOLZPrefix(bitLength);
+        Evolution.run(problem);
     }
 }

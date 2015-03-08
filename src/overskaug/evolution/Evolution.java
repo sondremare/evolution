@@ -14,9 +14,8 @@ import overskaug.evolution.selection.RouletteWheel;
 import java.util.ArrayList;
 
 public class Evolution {
-    public static int MAXIMUM_POOL_SIZE = 20;
-    public static int BIT_LENGTH = 40;
-    public static int MAX_GENERATIONS = 1500;
+    public static int MAXIMUM_POOL_SIZE = 100;
+    public static int MAX_GENERATIONS = 100;
     public static double CROSSOVER_RATE = 1;
     public static double MUTATION_CHANCE = 0.05;
 
@@ -24,7 +23,7 @@ public class Evolution {
         Population population = problem.getPopulation();
         Fitness fitness = problem.getFitness();
         int generations = 0;
-        while (generations < MAX_GENERATIONS && fitness.getThreshold() > getBestFitness(population.getAdults())) {
+        while (generations < MAX_GENERATIONS && fitness.getOptimalFitness() > getBestFitness(population.getAdults())) {
             for (Individual individual : population.getChildren()) {
                 individual.setFitness(fitness.calculateFitness(individual.getPhenotype()));
             }
@@ -57,6 +56,10 @@ public class Evolution {
                 }
             }
             generations++;
+            //System.out.println("************************" + generations + "*********************");
+            for (Individual individual : population.getAdults()) {
+                //System.out.println(individual.getGenotype().getGenes() + " - " + individual.getPhenotype()+ " - " + individual.getFitness());
+            }
         }
         System.out.println("generations: "+generations);
         System.out.println("DONE");

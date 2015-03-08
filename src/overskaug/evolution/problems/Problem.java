@@ -8,7 +8,6 @@ import overskaug.evolution.genotypes.Genotype;
 
 public interface Problem {
     abstract Population getPopulation();
-    abstract Genotype getSolution();
     abstract Fitness getFitness();
     abstract Crossover getCrossover();
     abstract Mutation getMutation();
