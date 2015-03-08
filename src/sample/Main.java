@@ -10,6 +10,7 @@ import overskaug.evolution.genotypes.BitVectorGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.problems.LOLZPrefix;
 import overskaug.evolution.problems.OneMax;
+import overskaug.evolution.problems.SurprisingSequences;
 import overskaug.evolution.util.Converter;
 import overskaug.evolution.util.FixedBitSet;
 
@@ -29,8 +30,10 @@ public class Main extends Application {
     public static void main(String[] args) {
         //launch(args);
         int bitLength = 40;
-        OneMax problem = new OneMax(bitLength);
-        //LOLZPrefix problem = new LOLZPrefix(bitLength);
+        //OneMax problem = new OneMax(bitLength);
+        //LOLZPrefix problem = new LOLZPrefix(bitLength, 6);
+        SurprisingSequences problem = new SurprisingSequences(10, 35, true);
+
         Evolution.run(problem);
     }
 }

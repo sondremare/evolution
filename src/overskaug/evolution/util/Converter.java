@@ -10,6 +10,10 @@ public class Converter {
 
     public static int BITS_PER_INTEGER = 1;
 
+    public static void setBitsPerInteger(int bitsPerInteger) {
+        BITS_PER_INTEGER = bitsPerInteger;
+    }
+
     public static IntegerPhenotype convertToPhenotype(BitVectorGenotype genotype) {
         FixedBitSet genes = genotype.getGenes();
         int shift = genes.length() - 1;

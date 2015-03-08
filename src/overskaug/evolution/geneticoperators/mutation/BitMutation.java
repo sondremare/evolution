@@ -16,7 +16,7 @@ public class BitMutation implements Mutation {
             Random random = new Random();
             if (chance >= random.nextDouble()) {
                 int geneNumber = random.nextInt(genes.length());
-                genes.set(geneNumber, !genes.get(geneNumber));
+                genes.flip(geneNumber);
             }
         } else {
             throw new UnsupportedGeneticOperationException(genotype.getClass().getSimpleName() + " is not supported by this mutation operator");
@@ -31,7 +31,7 @@ public class BitMutation implements Mutation {
             Random random = new Random();
             for (int i = 0; i < genes.length(); i++) {
                 if (chance <= random.nextDouble()) {
-                    genes.set(i, !genes.get(i));
+                    genes.flip(i);
                 }
             }
         } else {

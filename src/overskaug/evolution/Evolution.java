@@ -4,6 +4,7 @@ import overskaug.evolution.fitness.Fitness;
 import overskaug.evolution.geneticoperators.UnsupportedGeneticOperationException;
 import overskaug.evolution.geneticoperators.crossover.Crossover;
 import overskaug.evolution.geneticoperators.mutation.Mutation;
+import overskaug.evolution.phenotypes.UnsupportedPhenotypeException;
 import overskaug.evolution.population.Individual;
 import overskaug.evolution.population.Population;
 import overskaug.evolution.problems.Problem;
@@ -25,7 +26,11 @@ public class Evolution {
         int generations = 0;
         while (generations < MAX_GENERATIONS && fitness.getOptimalFitness() > getBestFitness(population.getAdults())) {
             for (Individual individual : population.getChildren()) {
-                individual.setFitness(fitness.calculateFitness(individual.getPhenotype()));
+                try {
+                    individual.setFitness(fitness.calculateFitness(individual.getPhenotype()));
+                } catch (UnsupportedPhenotypeException e) {
+                    System.err.println(e.getMessage());
+                }
             }
             population.setAdults(AdultSelection.fullGenerationalReplacement(population.getAdults(), population.getChildren()));
             population.clearChildren();
@@ -62,6 +67,7 @@ public class Evolution {
             }
         }
         System.out.println("generations: "+generations);
+        //System.out.println(AdultSelection.getBestIndividual(population.getAdults()).getPhenotype());
         System.out.println("DONE");
 
 

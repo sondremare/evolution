@@ -3,23 +3,20 @@ package overskaug.evolution.problems;
 import overskaug.evolution.Evolution;
 import overskaug.evolution.fitness.Fitness;
 import overskaug.evolution.fitness.LeadingNumbersFitness;
-import overskaug.evolution.fitness.SumOfSquaresFitness;
 import overskaug.evolution.geneticoperators.crossover.BitCrossover;
 import overskaug.evolution.geneticoperators.crossover.Crossover;
 import overskaug.evolution.geneticoperators.mutation.BitMutation;
 import overskaug.evolution.geneticoperators.mutation.Mutation;
 import overskaug.evolution.population.BitVectorIndividual;
 import overskaug.evolution.population.Population;
-import overskaug.evolution.util.Converter;
 
 public class LOLZPrefix implements Problem {
     private LeadingNumbersFitness fitness;
     private BitCrossover crossover = new BitCrossover();
     private BitMutation mutation = new BitMutation();
     private Population population = new Population();
-    private final int threshold = 6;
 
-    public LOLZPrefix(int bitLength) {
+    public LOLZPrefix(int bitLength, int threshold) {
         this.fitness = new LeadingNumbersFitness(threshold);
         for (int i = 0; i < Evolution.MAXIMUM_POOL_SIZE; i++) {
             population.addIndividual(new BitVectorIndividual(bitLength));
