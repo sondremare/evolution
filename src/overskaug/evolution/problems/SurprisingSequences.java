@@ -22,6 +22,8 @@ public class SurprisingSequences implements Problem {
     private BitMutation mutation = new BitMutation();
     private Population population = new Population();
     private int symbolSetSize;
+    private Enum adultSelection;
+    private Enum parentSelection;
 
     public SurprisingSequences(int symbolSetSize, int sequenceLength, boolean global) {
         /*this.symbolSetSize = symbolSetSize;

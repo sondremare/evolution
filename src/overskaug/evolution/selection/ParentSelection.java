@@ -1,16 +1,22 @@
 package overskaug.evolution.selection;
 
-import overskaug.evolution.population.BitVectorIndividual;
 import overskaug.evolution.population.Individual;
+import overskaug.evolution.util.FitnessCalculations;
 
 import java.util.ArrayList;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class ParentSelection {
+    public static enum ParentSelectionEnum {
+        FITNESS_PROPORTIONATE,
+        SIGMA_SCALING,
+        BOLTZMANN_SELECTION,
+        TOURNAMENT_SELECTION
+    }
 
     public static RouletteWheel fitnessProportionate(ArrayList<Individual> individuals) {
-        double fitnessSum = getFitnessSum(individuals);
+        double fitnessSum = FitnessCalculations.getFitnessSum(individuals);
         NavigableMap<Double, Individual> rouletteWheelMap = new TreeMap<Double, Individual>();
         double accumulatedRange = 0;
         for (Individual individual : individuals) {
@@ -21,8 +27,8 @@ public class ParentSelection {
     }
 
     public static RouletteWheel sigmaScaling(ArrayList<Individual> individuals) {
-        double fitnessAverage = getFitnessAverage(individuals);
-        double standardDeviation = getStandardDeviation(individuals);
+        double fitnessAverage = FitnessCalculations.getFitnessAverage(individuals);
+        double standardDeviation = FitnessCalculations.getStandardDeviation(individuals);
         NavigableMap<Double, Individual> rouletteWheelMap = new TreeMap<Double, Individual>();
         double accumulatedRange = 0;
         for (Individual individual : individuals) {
@@ -32,37 +38,14 @@ public class ParentSelection {
         return new RouletteWheel(rouletteWheelMap);
     }
 
-    public static void tournamentSelection() {
+    public static RouletteWheel tournamentSelection() {
         //TODO
+        return null;
     }
 
-    public static void boltzmannSelection() {
+    public static RouletteWheel boltzmannSelection() {
         //TODO
+        return null;
     }
 
-    private static double getFitnessSum(ArrayList<Individual> individuals) {
-        double sum = 0;
-        for (Individual individual : individuals) {
-            sum += individual.getFitness();
-        }
-        return sum;
-    }
-
-    private static double getFitnessAverage(ArrayList<Individual> individuals) {
-        double sum = getFitnessSum(individuals);
-        return sum / individuals.size();
-    }
-
-    private static double getVariance(ArrayList<Individual> individuals) {
-        double fitnessAverage = getFitnessAverage(individuals);
-        double sumOfSquares = 0;
-        for (Individual individual : individuals) {
-            sumOfSquares += Math.pow(individual.getFitness() - fitnessAverage, 2);
-        }
-        return sumOfSquares / (individuals.size() - 1);
-    }
-
-    private static double getStandardDeviation(ArrayList<Individual> individuals) {
-        return Math.sqrt(getVariance(individuals));
-    }
 }

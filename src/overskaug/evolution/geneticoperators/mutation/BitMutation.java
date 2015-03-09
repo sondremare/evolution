@@ -30,7 +30,7 @@ public class BitMutation implements Mutation {
             FixedBitSet genes = bitVectorGenotype.getGenes();
             Random random = new Random();
             for (int i = 0; i < genes.length(); i++) {
-                if (chance <= random.nextDouble()) {
+                if (chance >= random.nextDouble()) {
                     genes.flip(i);
                 }
             }

@@ -30,4 +30,13 @@ public class Population {
     public void clearChildren() {
         this.children = new ArrayList<Individual>();
     }
+
+    public void clearAdults() {
+        this.adults = new ArrayList<Individual>();
+    }
+
+    public void clear() {
+        clearChildren();
+        clearAdults();
+    }
 }

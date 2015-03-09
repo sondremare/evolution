@@ -19,6 +19,8 @@ public class OneMax implements Problem {
     private BitCrossover crossover = new BitCrossover();
     private BitMutation mutation = new BitMutation();
     private Population population = new Population();
+    private Enum adultSelection;
+    private Enum parentSelection;
 
     public OneMax(int bitLength) {
         FixedBitSet solutionBitSet = new FixedBitSet(bitLength);

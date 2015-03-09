@@ -20,20 +20,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Scene scene = new Scene(GUI.initGUI(), 1000, 600);
+        primaryStage.setTitle("Survival of the fittest");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
 
-    public static void main(String[] args) {
-        //launch(args);
+    public static void main(String[] args) throws Exception {
+        launch(args);
         int bitLength = 40;
-        //OneMax problem = new OneMax(bitLength);
+        OneMax problem = new OneMax(bitLength);
         //LOLZPrefix problem = new LOLZPrefix(bitLength, 6);
-        SurprisingSequences problem = new SurprisingSequences(10, 35, true);
+        //SurprisingSequences problem = new SurprisingSequences(10, 35, true);
 
-        Evolution.run(problem);
+        //Evolution.run(problem);
     }
 }
