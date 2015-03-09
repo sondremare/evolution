@@ -8,14 +8,16 @@ import java.util.TreeMap;
 
 public class RouletteWheel {
     private NavigableMap<Double, Individual> rouletteWheel = new TreeMap<Double, Individual>();
-    Random random = new Random();
+    private Random random = new Random();
+    private double range;
 
-    public RouletteWheel(NavigableMap<Double, Individual> rouletteWheel) {
+    public RouletteWheel(NavigableMap<Double, Individual> rouletteWheel, double range) {
         this.rouletteWheel = rouletteWheel;
+        this.range = range;
     }
 
     public Individual nextParent() {
-        double randomDouble = random.nextDouble();
+        double randomDouble = random.nextDouble() * range;
         return rouletteWheel.ceilingEntry(randomDouble).getValue();
     }
 }

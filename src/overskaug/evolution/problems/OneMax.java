@@ -1,6 +1,7 @@
 package overskaug.evolution.problems;
 
 import overskaug.evolution.Evolution;
+import overskaug.evolution.phenotypes.Phenotype;
 import overskaug.evolution.population.BitVectorIndividual;
 import overskaug.evolution.population.Population;
 import overskaug.evolution.fitness.Fitness;
@@ -19,8 +20,6 @@ public class OneMax implements Problem {
     private BitCrossover crossover = new BitCrossover();
     private BitMutation mutation = new BitMutation();
     private Population population = new Population();
-    private Enum adultSelection;
-    private Enum parentSelection;
 
     public OneMax(int bitLength) {
         FixedBitSet solutionBitSet = new FixedBitSet(bitLength);
@@ -50,5 +49,10 @@ public class OneMax implements Problem {
     @Override
     public Mutation getMutation() {
         return mutation;
+    }
+
+    @Override
+    public boolean isValidPhenotype(Phenotype phenotype) {
+        return true;
     }
 }

@@ -23,7 +23,7 @@ public class ParentSelection {
             accumulatedRange += individual.getFitness() / fitnessSum;
             rouletteWheelMap.put(accumulatedRange, individual);
         }
-        return new RouletteWheel(rouletteWheelMap);
+        return new RouletteWheel(rouletteWheelMap, accumulatedRange);
     }
 
     public static RouletteWheel sigmaScaling(ArrayList<Individual> individuals) {
@@ -31,11 +31,11 @@ public class ParentSelection {
         double standardDeviation = FitnessCalculations.getStandardDeviation(individuals);
         NavigableMap<Double, Individual> rouletteWheelMap = new TreeMap<Double, Individual>();
         double accumulatedRange = 0;
-        for (Individual individual : individuals) {
+        for (Individual individual : individuals) {;
             accumulatedRange += (1 + (individual.getFitness() - fitnessAverage) / (2 * standardDeviation));
             rouletteWheelMap.put(accumulatedRange, individual);
         }
-        return new RouletteWheel(rouletteWheelMap);
+        return new RouletteWheel(rouletteWheelMap, accumulatedRange);
     }
 
     public static RouletteWheel tournamentSelection() {

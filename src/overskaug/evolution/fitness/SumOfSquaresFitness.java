@@ -1,6 +1,8 @@
 package overskaug.evolution.fitness;
 
+import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.phenotypes.Phenotype;
+import overskaug.evolution.phenotypes.UnsupportedPhenotypeException;
 
 import java.util.ArrayList;
 
@@ -18,18 +20,24 @@ public class SumOfSquaresFitness implements Fitness {
     }
 
     @Override
-    public double calculateFitness(Phenotype current) {
+    public double calculateFitness(Phenotype current) throws UnsupportedPhenotypeException {
         double fitness = 1 / (1 + sumOfSquares(current));
         return fitness;
     }
 
-    public double sumOfSquares(Phenotype current) {
-        ArrayList<Integer> currentPhenotype = current.getPhenotype();
-        ArrayList<Integer> solutionPhenotype = solution.getPhenotype();
-        double sum = 0;
-        for (int i = 0; i < currentPhenotype.size(); i++) {
-            sum += Math.pow(currentPhenotype.get(i) - solutionPhenotype.get(i), 2);
+    public double sumOfSquares(Phenotype phenotype) throws UnsupportedPhenotypeException {
+        if (phenotype instanceof IntegerPhenotype) {
+            IntegerPhenotype integerPhenotype = (IntegerPhenotype) phenotype;
+            IntegerPhenotype solutionPhenotype = (IntegerPhenotype) solution;
+            ArrayList<Integer> integers = integerPhenotype.getPhenotype();
+            ArrayList<Integer> solution = solutionPhenotype.getPhenotype();
+            double sum = 0;
+            for (int i = 0; i < integers.size(); i++) {
+                sum += Math.pow(integers.get(i) - solution.get(i), 2);
+            }
+            return sum;
+        } else {
+            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this fitness function");
         }
-        return sum;
     }
 }

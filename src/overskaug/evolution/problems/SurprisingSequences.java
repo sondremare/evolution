@@ -6,10 +6,16 @@ import overskaug.evolution.fitness.GlobalSequenceFitness;
 import overskaug.evolution.fitness.LocalSequenceFitness;
 import overskaug.evolution.geneticoperators.crossover.BitCrossover;
 import overskaug.evolution.geneticoperators.crossover.Crossover;
+import overskaug.evolution.geneticoperators.crossover.IntegerCrossover;
 import overskaug.evolution.geneticoperators.mutation.BitMutation;
+import overskaug.evolution.geneticoperators.mutation.IntegerMutation;
 import overskaug.evolution.geneticoperators.mutation.Mutation;
+import overskaug.evolution.genotypes.Genotype;
+import overskaug.evolution.genotypes.IntegerGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
+import overskaug.evolution.phenotypes.Phenotype;
 import overskaug.evolution.population.BitVectorIndividual;
+import overskaug.evolution.population.IntegerIndividual;
 import overskaug.evolution.population.Population;
 import overskaug.evolution.util.Converter;
 
@@ -18,45 +24,32 @@ import java.util.Random;
 
 public class SurprisingSequences implements Problem {
     private GlobalSequenceFitness fitness;
-    private BitCrossover crossover = new BitCrossover();
-    private BitMutation mutation = new BitMutation();
+    private IntegerCrossover crossover = new IntegerCrossover();
+    private IntegerMutation mutation = new IntegerMutation();
     private Population population = new Population();
     private int symbolSetSize;
-    private Enum adultSelection;
-    private Enum parentSelection;
 
     public SurprisingSequences(int symbolSetSize, int sequenceLength, boolean global) {
-        /*this.symbolSetSize = symbolSetSize;
-        int bitsPerInteger = (int) Math.ceil(Math.log(symbolSetSize) / Math.log(2));
-        int bitLength = bitsPerInteger * sequenceLength;
-        Converter.setBitsPerInteger(bitsPerInteger);
+        this.symbolSetSize = symbolSetSize;
         if (global) {
             this.fitness = new GlobalSequenceFitness();
         } else {
             this.fitness = new LocalSequenceFitness();
         }
-        System.out.println(System.currentTimeMillis());
         Random random = new Random();
-        for (int i = 0; i < Evolution.MAXIMUM_POOL_SIZE; i++) {
+
+        while (population.getChildren().size() <= Evolution.MAXIMUM_POOL_SIZE) {
             ArrayList<Integer> integers = new ArrayList<Integer>();
             for (int j = 0; j < sequenceLength; j++) {
                 int randomInteger = random.nextInt(symbolSetSize);
                 integers.add(randomInteger);
             }
-            IntegerPhenotype integerPhenotype = new IntegerPhenotype(integers);
-            population.addIndividual(new BitVectorIndividual(Converter.convertToGenotype(integerPhenotype)));
-
-        }
-        System.out.println(population.getChildren().size());
-        /*int counter = 0;
-        while (population.getChildren().size() < Evolution.MAXIMUM_POOL_SIZE) {
-            BitVectorIndividual child = new BitVectorIndividual(bitLength);
-            if (validPhenotype(child.getPhenotype())) {
-                population.addIndividual(child);
+            IntegerGenotype integerGenotype = new IntegerGenotype(integers);
+            IntegerIndividual individual = new IntegerIndividual(integerGenotype);
+            if (isValidPhenotype(individual.getPhenotype())) {
+                population.addIndividual(individual);
             }
-            counter++;
-            System.out.println(counter + " - " + population.getChildren().size());
-        }*/
+        }
     }
 
     @Override
@@ -77,5 +70,17 @@ public class SurprisingSequences implements Problem {
     @Override
     public Mutation getMutation() {
         return mutation;
+    }
+
+    @Override
+    public boolean isValidPhenotype(Phenotype phenotype) {
+        IntegerPhenotype integerPhenotype = (IntegerPhenotype) phenotype;
+        ArrayList<Integer> integers = integerPhenotype.getPhenotype();
+        for (int i = 0; i < integers.size(); i++) {
+            if (integers.get(i) >= symbolSetSize || integers.get(i) < 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

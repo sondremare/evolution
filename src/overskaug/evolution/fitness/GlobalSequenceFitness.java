@@ -1,5 +1,6 @@
 package overskaug.evolution.fitness;
 
+import overskaug.evolution.genotypes.IntegerGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.phenotypes.Phenotype;
 import overskaug.evolution.phenotypes.UnsupportedPhenotypeException;
@@ -17,8 +18,9 @@ public class GlobalSequenceFitness implements Fitness {
     @Override
     public double calculateFitness(Phenotype phenotype) throws UnsupportedPhenotypeException {
         if (phenotype instanceof IntegerPhenotype) {
+            IntegerPhenotype integerPhenotype = (IntegerPhenotype) phenotype;
+            ArrayList<Integer> integers = integerPhenotype.getPhenotype();
             int sum = 0;
-            ArrayList<Integer> integers = phenotype.getPhenotype();
             for (int i = 0; i < integers.size()-1; i++) {
                 int first = integers.get(i);
                 for (int j = i+1; j < integers.size(); j++) {
@@ -32,7 +34,7 @@ public class GlobalSequenceFitness implements Fitness {
             }
             return (double) 1 / (1 + sum);
         } else {
-            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this mutation operator");
+            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this fitness function");
         }
     }
 

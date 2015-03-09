@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -152,10 +151,19 @@ public class GUI {
         final RadioButton generationalMixing = new RadioButton("Generational Mixing");
         generationalMixing.setToggleGroup(adultSelectionGroup);
 
+        Label overProductionPoolSize = new Label("Overproduction pool size: ");
+        final TextField overProductionPoolSizeInput = new TextField();
+        overProductionPoolSizeInput.setMaxWidth(50);
+        overProductionPoolSizeInput.setText("120");
+
         adultSelectionGrid.add(adultSelectionLabel, 0, 0);
         adultSelectionGrid.add(fullGenerationalReplacement, 0, 1);
-        adultSelectionGrid.add(overProduction, 0, 2);
-        adultSelectionGrid.add(generationalMixing, 0, 3);
+        adultSelectionGrid.add(generationalMixing, 0, 2);
+        adultSelectionGrid.add(overProduction, 0, 3);
+        adultSelectionGrid.add(overProductionPoolSize, 0, 4);
+        adultSelectionGrid.add(overProductionPoolSizeInput, 1, 4);
+
+
 
         GridPane parentSelectionGrid = new GridPane();
         parentSelectionGrid.setPrefSize(250, 200);
@@ -232,7 +240,15 @@ public class GUI {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                //retainData();
                 clearPlot();
+
+                //Set various constants
+                Evolution.MAXIMUM_POOL_SIZE = Integer.parseInt(populationSizeInput.getText());
+                Evolution.MAX_GENERATIONS = Integer.parseInt(maxGenerationsInput.getText());
+                Evolution.CROSSOVER_RATE = Double.parseDouble(crossoverRateInput.getText());
+                Evolution.MUTATION_RATE = Double.parseDouble(mutationRateInput.getText());
+
                 if (problemSelector.getValue().equals("OneMax")) {
                     int bitLength = Integer.parseInt(bitLengthInput.getText());
                     problem = new OneMax(bitLength);
@@ -249,10 +265,13 @@ public class GUI {
                 //Set AdultSelection
                 if (fullGenerationalReplacement.isSelected()) {
                     Evolution.adultSelectionType = AdultSelection.AdultSelectionEnum.FULL_GENERATIONAL_REPLACEMENT;
+                    Evolution.REPRODUCTION_POOL_SIZE = Evolution.MAXIMUM_POOL_SIZE;
                 } else if (overProduction.isSelected()) {
                     Evolution.adultSelectionType = AdultSelection.AdultSelectionEnum.OVER_PRODUCTION;
+                    Evolution.REPRODUCTION_POOL_SIZE = Integer.parseInt(overProductionPoolSizeInput.getText());
                 } else if (generationalMixing.isSelected()) {
                     Evolution.adultSelectionType = AdultSelection.AdultSelectionEnum.GENERATIONAL_MIXING;
+                    Evolution.REPRODUCTION_POOL_SIZE = Evolution.MAXIMUM_POOL_SIZE;
                 }
 
                 //Set ParentSelection
@@ -273,11 +292,6 @@ public class GUI {
                     Evolution.mutationType = Mutation.MutationEnum.PER_GENE_MUTATION;
                 }
 
-                //Set various constants
-                Evolution.MAXIMUM_POOL_SIZE = Integer.parseInt(populationSizeInput.getText());
-                Evolution.MAX_GENERATIONS = Integer.parseInt(maxGenerationsInput.getText());
-                Evolution.CROSSOVER_RATE = Double.parseDouble(crossoverRateInput.getText());
-                Evolution.MUTATION_RATE = Double.parseDouble(mutationRateInput.getText());
                 try {
                     Evolution.run(problem);
                 } catch (Exception e) {
@@ -293,7 +307,7 @@ public class GUI {
         generationAxis.setLabel("Generation");
         final NumberAxis fitnessAxis = new NumberAxis("Fitness", 0, 1, 0.1);
         final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(generationAxis, fitnessAxis);
-        lineChart.setAnimated(true);
+        lineChart.setAnimated(false);
         lineChart.setCreateSymbols(false);
         lineChart.setPrefSize(1000, 400);
 
@@ -310,8 +324,15 @@ public class GUI {
     }
 
     private static void clearPlot() {
-        Evolution.bestFitnessSeries.getData().clear();
-        Evolution.averageFitnesSeries.getData().clear();
-        Evolution.standardDeviationFitnessSeries.getData().clear();
+        if (Evolution.bestFitnessSeries.getData() != null) Evolution.bestFitnessSeries.getData().clear();
+        if (Evolution.averageFitnesSeries.getData() != null) Evolution.averageFitnesSeries.getData().clear();
+        if (Evolution.standardDeviationFitnessSeries.getData() != null) Evolution.standardDeviationFitnessSeries.getData().clear();
+    }
+
+    private static void retainData() {
+        plot.getData().retainAll();
+        plot.getData().add(Evolution.bestFitnessSeries);
+        plot.getData().add(Evolution.averageFitnesSeries);
+        plot.getData().add(Evolution.standardDeviationFitnessSeries);
     }
 }

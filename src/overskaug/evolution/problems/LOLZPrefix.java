@@ -7,6 +7,7 @@ import overskaug.evolution.geneticoperators.crossover.BitCrossover;
 import overskaug.evolution.geneticoperators.crossover.Crossover;
 import overskaug.evolution.geneticoperators.mutation.BitMutation;
 import overskaug.evolution.geneticoperators.mutation.Mutation;
+import overskaug.evolution.phenotypes.Phenotype;
 import overskaug.evolution.population.BitVectorIndividual;
 import overskaug.evolution.population.Population;
 
@@ -15,8 +16,6 @@ public class LOLZPrefix implements Problem {
     private BitCrossover crossover = new BitCrossover();
     private BitMutation mutation = new BitMutation();
     private Population population = new Population();
-    private Enum adultSelection;
-    private Enum parentSelection;
 
     public LOLZPrefix(int bitLength, int threshold) {
         this.fitness = new LeadingNumbersFitness(threshold);
@@ -43,5 +42,10 @@ public class LOLZPrefix implements Problem {
     @Override
     public Mutation getMutation() {
         return mutation;
+    }
+
+    @Override
+    public boolean isValidPhenotype(Phenotype phenotype) {
+        return true;
     }
 }

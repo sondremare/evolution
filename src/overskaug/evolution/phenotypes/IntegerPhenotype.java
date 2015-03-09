@@ -19,7 +19,7 @@ public class IntegerPhenotype implements Phenotype {
         for (Integer integer : phenotype) {
             output += integer + ", ";
         }
-        output.substring(0, output.length()-2); //strip away trailing comm and space
+        if (output != null && output.length() != 0) output.substring(0, output.length()-2); //strip away trailing comm and space
         return output;
     }
 }

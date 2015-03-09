@@ -1,6 +1,7 @@
 package overskaug.evolution.util;
 
 import overskaug.evolution.genotypes.BitVectorGenotype;
+import overskaug.evolution.genotypes.IntegerGenotype;
 import overskaug.evolution.phenotypes.IntegerPhenotype;
 
 import java.util.ArrayList;
@@ -30,5 +31,9 @@ public class Converter {
         }
         Collections.reverse(integers);
         return new IntegerPhenotype(integers);
+    }
+
+    public static IntegerPhenotype convertToPhenotype(IntegerGenotype genotype) {
+        return new IntegerPhenotype(genotype.getGenes());
     }
 }

@@ -8,7 +8,7 @@ public class BitVectorIndividual implements Individual {
 
     private BitVectorGenotype genotype;
     private IntegerPhenotype phenotype;
-    private double fitness = Integer.MAX_VALUE;
+    private double fitness = 0;
 
     public BitVectorIndividual(int bitLength) {
         this.genotype = new BitVectorGenotype(bitLength);

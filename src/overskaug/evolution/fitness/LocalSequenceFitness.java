@@ -12,8 +12,9 @@ public class LocalSequenceFitness extends GlobalSequenceFitness {
     @Override
     public double calculateFitness(Phenotype phenotype) throws UnsupportedPhenotypeException {
         if (phenotype instanceof IntegerPhenotype) {
+            IntegerPhenotype integerPhenotype = (IntegerPhenotype) phenotype;
+            ArrayList<Integer> integers = integerPhenotype.getPhenotype();
             int sum = 0;
-            ArrayList<Integer> integers = phenotype.getPhenotype();
             for (int i = 0; i < integers.size()-1; i++) {
                 int first = integers.get(i);
                 int second = integers.get(i+1);
@@ -24,7 +25,7 @@ public class LocalSequenceFitness extends GlobalSequenceFitness {
             }
             return (double) 1 / (1 + sum);
         } else {
-            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this mutation operator");
+            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this fitness function");
         }
     }
 }

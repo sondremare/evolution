@@ -1,5 +1,6 @@
 package overskaug.evolution.problems;
 
+import overskaug.evolution.phenotypes.Phenotype;
 import overskaug.evolution.population.Population;
 import overskaug.evolution.fitness.Fitness;
 import overskaug.evolution.geneticoperators.crossover.Crossover;
@@ -11,4 +12,5 @@ public interface Problem {
     abstract Fitness getFitness();
     abstract Crossover getCrossover();
     abstract Mutation getMutation();
+    abstract boolean isValidPhenotype(Phenotype phenotype);
 }

@@ -17,10 +17,12 @@ import overskaug.evolution.util.FitnessCalculations;
 import java.util.ArrayList;
 
 public class Evolution {
-    public static int MAXIMUM_POOL_SIZE = 200;
+    public static int MAXIMUM_POOL_SIZE = 100;
+    public static int REPRODUCTION_POOL_SIZE = 100;
     public static int MAX_GENERATIONS = 100;
     public static double CROSSOVER_RATE = 1;
-    public static double MUTATION_RATE = 0.001;
+    public static double MUTATION_RATE = 0.05;
+
     public static AdultSelection.AdultSelectionEnum adultSelectionType = AdultSelection.AdultSelectionEnum.FULL_GENERATIONAL_REPLACEMENT;
     public static ParentSelection.ParentSelectionEnum parentSelectionType = ParentSelection.ParentSelectionEnum.FITNESS_PROPORTIONATE;
     public static Mutation.MutationEnum mutationType = Mutation.MutationEnum.GENOME_MUTATION;
@@ -45,7 +47,7 @@ public class Evolution {
             if (adultSelectionType.equals(AdultSelection.AdultSelectionEnum.FULL_GENERATIONAL_REPLACEMENT)) {
                 population.setAdults(AdultSelection.fullGenerationalReplacement(population.getAdults(), population.getChildren()));
             } else if (adultSelectionType.equals(AdultSelection.AdultSelectionEnum.OVER_PRODUCTION)) {
-                population.setAdults(AdultSelection.overProduction(population.getAdults(), population.getChildren(), MAXIMUM_POOL_SIZE)); //TODO change poolsize
+                population.setAdults(AdultSelection.overProduction(population.getAdults(), population.getChildren(), MAXIMUM_POOL_SIZE));
             } else if (adultSelectionType.equals(AdultSelection.AdultSelectionEnum.GENERATIONAL_MIXING)) {
                 population.setAdults(AdultSelection.generationalMixing(population.getAdults(), population.getChildren(), MAXIMUM_POOL_SIZE));
             } else {
@@ -65,40 +67,38 @@ public class Evolution {
             }
 
             Crossover crossover = problem.getCrossover();
-            //Sexual reproduction
-            for (int i = 0; i < (double)MAXIMUM_POOL_SIZE / 2; i++) {
+            while (population.getChildren().size() <= REPRODUCTION_POOL_SIZE) {
                 Individual parent1 = rouletteWheel.nextParent();
                 Individual parent2 = rouletteWheel.nextParent();
                 try {
                     ArrayList<Individual> children = crossover.onePointCrossover(parent1, parent2, CROSSOVER_RATE);
-                    population.getChildren().addAll(children);
-                } catch (UnsupportedGeneticOperationException e) {
-                    System.err.println(e.getMessage());
-                }
-            }
-
-            //Mutation
-            Mutation mutation = problem.getMutation();
-            for (Individual child : population.getChildren()) {
-                try {
-                    if (mutationType.equals(Mutation.MutationEnum.GENOME_MUTATION)) {
-                        mutation.mutate(child.getGenotype(), MUTATION_RATE);
-                    } else if (mutationType.equals(Mutation.MutationEnum.PER_GENE_MUTATION)) {
-                        mutation.mutateAllComponents(child.getGenotype(), MUTATION_RATE);
+                    Mutation mutation = problem.getMutation();
+                    for (Individual child : children) {
+                        if (mutationType.equals(Mutation.MutationEnum.GENOME_MUTATION)) {
+                            mutation.mutate(child.getGenotype(), MUTATION_RATE);
+                        } else if (mutationType.equals(Mutation.MutationEnum.PER_GENE_MUTATION)) {
+                            mutation.mutateAllComponents(child.getGenotype(), MUTATION_RATE);
+                        }
+                        if (problem.isValidPhenotype(child.getPhenotype())) {
+                            population.getChildren().add(child);
+                        }
                     }
                 } catch (UnsupportedGeneticOperationException e) {
                     System.err.println(e.getMessage());
                 }
             }
-
             //Workaround for dynamic plotting
             bestFitnessSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getBestFitness(population.getAdults())));
             averageFitnesSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getFitnessAverage(population.getAdults())));
             standardDeviationFitnessSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getStandardDeviation(population.getAdults())));
+
+            System.out.println("*********************** generation: "+ generations +" **********************");
+            System.out.println("Best fitness: " + FitnessCalculations.getBestFitness(population.getAdults()));
+            System.out.println("Average fitness: "+ FitnessCalculations.getFitnessAverage(population.getAdults()));
+            System.out.println("Standard devitation: "+ FitnessCalculations.getFitnessAverage(population.getAdults()));
+            System.out.println("Best phenotype: "+FitnessCalculations.getBestIndividual(population.getAdults()).getPhenotype());
+
             generations++;
         }
-        System.out.println("generations: "+generations);
-        System.out.println("DONE");
     }
-
 }

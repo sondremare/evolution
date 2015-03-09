@@ -9,8 +9,8 @@ public interface Mutation {
         PER_GENE_MUTATION
     }
 
-    abstract public void mutate(Genotype genotype, double percentage) throws UnsupportedGeneticOperationException;
-    abstract public void mutateAllComponents(Genotype genotype, double percentage) throws UnsupportedGeneticOperationException;
+    abstract public void mutate(Genotype genotype, double chance) throws UnsupportedGeneticOperationException;
+    abstract public void mutateAllComponents(Genotype genotype, double chance) throws UnsupportedGeneticOperationException;
 
 
 }

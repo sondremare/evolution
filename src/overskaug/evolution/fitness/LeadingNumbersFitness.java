@@ -1,6 +1,8 @@
 package overskaug.evolution.fitness;
 
+import overskaug.evolution.phenotypes.IntegerPhenotype;
 import overskaug.evolution.phenotypes.Phenotype;
+import overskaug.evolution.phenotypes.UnsupportedPhenotypeException;
 
 import java.util.ArrayList;
 
@@ -22,25 +24,31 @@ public class LeadingNumbersFitness implements Fitness {
     }
 
     @Override
-    public double calculateFitness(Phenotype phenotype) {
-        ArrayList<Integer> numbers = phenotype.getPhenotype();
-        int firstValue = numbers.get(0);
-        int size = numbers.size();
-        int threshold = getThreshold();
-        if (firstValue == 0 && threshold < size) {
-            threshold = getThreshold();
+    public double calculateFitness(Phenotype phenotype) throws UnsupportedPhenotypeException {
+        if (phenotype instanceof IntegerPhenotype) {
+            IntegerPhenotype integerPhenotype = (IntegerPhenotype) phenotype;
+            ArrayList<Integer> integers = integerPhenotype.getPhenotype();
+            int firstValue = integers.get(0);
+            int size = integers.size();
+            int threshold = getThreshold();
+            if (firstValue == 0 && threshold < size) {
+                threshold = getThreshold();
+            } else {
+                threshold = size;
+            }
+
+            int count = 1;
+            for (int i = 1; i < threshold; i++) {
+                if (integers.get(i) == firstValue) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+            return (double) count / integers.size();
         } else {
-            threshold = size;
+            throw new UnsupportedPhenotypeException(phenotype.getClass().getSimpleName() + " is not supported by this fitness function");
         }
 
-        int count = 1;
-        for (int i = 1; i < threshold; i++) {
-            if (numbers.get(i) == firstValue) {
-                count++;
-            } else {
-                break;
-            }
-        }
-        return (double) count / numbers.size();
     }
 }

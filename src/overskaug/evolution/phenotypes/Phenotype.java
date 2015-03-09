@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public interface Phenotype {
 
-    abstract ArrayList<Integer> getPhenotype();
+    abstract Object getPhenotype();
 }
