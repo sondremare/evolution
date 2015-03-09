@@ -38,7 +38,7 @@ public class SurprisingSequences implements Problem {
         }
         Random random = new Random();
 
-        while (population.getChildren().size() <= Evolution.MAXIMUM_POOL_SIZE) {
+        while (population.getChildren().size() < Evolution.MAXIMUM_POOL_SIZE) {
             ArrayList<Integer> integers = new ArrayList<Integer>();
             for (int j = 0; j < sequenceLength; j++) {
                 int randomInteger = random.nextInt(symbolSetSize);

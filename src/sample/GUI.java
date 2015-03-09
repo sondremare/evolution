@@ -107,13 +107,13 @@ public class GUI {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String previous, String chosen) {
                 if (chosen.equals("OneMax")) {
-                    problemGrid.getChildren().remove(2, 3);
+                    problemGrid.getChildren().remove(2);
                     problemGrid.add(oneMaxGrid, 0, 2);
                 } else if (chosen.equals("LOLZPrefix")) {
-                    problemGrid.getChildren().remove(2, 3);
+                    problemGrid.getChildren().remove(2);
                     problemGrid.add(lolzPrefixGrid, 0, 2);
                 } else if (chosen.equals("SurprisingSequences")) {
-                    problemGrid.getChildren().remove(2, 3);
+                    problemGrid.getChildren().remove(2);
                     problemGrid.add(surprisingSequenceGrid, 0, 2);
                 }
             }
@@ -136,10 +136,23 @@ public class GUI {
         problemGrid.add(problemSelector, 0, 1);
         problemGrid.add(oneMaxGrid, 0, 2);
 
-        GridPane adultSelectionGrid = new GridPane();
+        final GridPane adultSelectionGrid = new GridPane();
         adultSelectionGrid.setPrefSize(250, 200);
         adultSelectionGrid.setVgap(5);
         adultSelectionGrid.setHgap(5);
+
+        Label overProductionPoolSize = new Label("Overproduction pool size: ");
+        final TextField overProductionPoolSizeInput = new TextField();
+        overProductionPoolSizeInput.setMaxWidth(50);
+        overProductionPoolSizeInput.setText("120");
+
+        final GridPane overProductionGrid = new GridPane();
+        overProductionGrid.setHgap(5);
+        overProductionGrid.setVgap(5);
+        overProductionGrid.add(overProductionPoolSize, 0, 0);
+        overProductionGrid.add(overProductionPoolSizeInput, 1, 0);
+
+        final GridPane adultSelectionPlaceHolderGrid = new GridPane();
 
         Label adultSelectionLabel = new Label("Adult Selection");
         ToggleGroup adultSelectionGroup = new ToggleGroup();
@@ -151,27 +164,33 @@ public class GUI {
         final RadioButton generationalMixing = new RadioButton("Generational Mixing");
         generationalMixing.setToggleGroup(adultSelectionGroup);
 
-        Label overProductionPoolSize = new Label("Overproduction pool size: ");
-        final TextField overProductionPoolSizeInput = new TextField();
-        overProductionPoolSizeInput.setMaxWidth(50);
-        overProductionPoolSizeInput.setText("120");
+        adultSelectionGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldToggle, Toggle newToggle) {
+                String radioButtonText = ((RadioButton)newToggle).getText();
+                if (radioButtonText.equals("Overproduction")) {
+                    adultSelectionGrid.getChildren().remove(4);
+                    adultSelectionGrid.add(overProductionGrid, 0, 4);
+                } else {
+                    adultSelectionGrid.getChildren().remove(4);
+                    adultSelectionGrid.add(adultSelectionPlaceHolderGrid, 0, 4);
+                }
+            }
+        });
 
         adultSelectionGrid.add(adultSelectionLabel, 0, 0);
         adultSelectionGrid.add(fullGenerationalReplacement, 0, 1);
-        adultSelectionGrid.add(generationalMixing, 0, 2);
-        adultSelectionGrid.add(overProduction, 0, 3);
-        adultSelectionGrid.add(overProductionPoolSize, 0, 4);
-        adultSelectionGrid.add(overProductionPoolSizeInput, 1, 4);
+        adultSelectionGrid.add(overProduction, 0, 2);
+        adultSelectionGrid.add(generationalMixing, 0, 3);
+        adultSelectionGrid.add(adultSelectionPlaceHolderGrid, 0, 4);
 
-
-
-        GridPane parentSelectionGrid = new GridPane();
+        final GridPane parentSelectionGrid = new GridPane();
         parentSelectionGrid.setPrefSize(250, 200);
         parentSelectionGrid.setVgap(5);
         parentSelectionGrid.setHgap(5);
 
         Label parentSelectionLabel = new Label("Parent Selection");
-        ToggleGroup parentSelectionGroup = new ToggleGroup();
+        final ToggleGroup parentSelectionGroup = new ToggleGroup();
         final RadioButton fitnessProportionate = new RadioButton("Fitness-proportionate");
         fitnessProportionate.setToggleGroup(parentSelectionGroup);
         fitnessProportionate.setSelected(true);
@@ -182,11 +201,67 @@ public class GUI {
         final RadioButton tournamentSelection = new RadioButton("Tournament Selection");
         tournamentSelection.setToggleGroup(parentSelectionGroup);
 
+        final GridPane boltzmannGrid = new GridPane();
+        boltzmannGrid.setVgap(5);
+        boltzmannGrid.setHgap(5);
+
+        Label temperature = new Label("Temperature: ");
+        final TextField temperatureInput = new TextField();
+        temperatureInput.setMaxWidth(50);
+        temperatureInput.setText("6");
+        Label decrease = new Label("Decrease: ");
+        final TextField decreaseInput = new TextField();
+        decreaseInput.setMaxWidth(50);
+        decreaseInput.setText("0.01");
+
+        boltzmannGrid.add(temperature, 0, 0);
+        boltzmannGrid.add(temperatureInput, 1, 0);
+        boltzmannGrid.add(decrease, 0, 1);
+        boltzmannGrid.add(decreaseInput, 1, 1);
+
+        final GridPane tournamentGrid = new GridPane();
+        tournamentGrid.setVgap(5);
+        tournamentGrid.setHgap(5);
+
+        Label groupSize = new Label("Group size: ");
+        final TextField groupSizeInput = new TextField();
+        groupSizeInput.setText("10");
+        groupSizeInput.setMaxWidth(50);
+        Label probability = new Label("Random probability: ");
+        final TextField probabilityInput = new TextField();
+        probabilityInput.setText("0.05");
+        probabilityInput.setMaxWidth(50);
+
+        tournamentGrid.add(groupSize, 0, 0);
+        tournamentGrid.add(groupSizeInput, 1, 0);
+        tournamentGrid.add(probability, 0, 1);
+        tournamentGrid.add(probabilityInput, 1, 1);
+
+        final GridPane placeHolderGrid = new GridPane();
+
+        parentSelectionGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldToggle, Toggle newToggle) {
+                String radioButtonText = ((RadioButton)newToggle).getText();
+                if (radioButtonText.equals("Boltzmann Selection")) {
+                    parentSelectionGrid.getChildren().remove(5);
+                    parentSelectionGrid.add(boltzmannGrid, 0, 5);
+                } else if (radioButtonText.equals("Tournament Selection")) {
+                    parentSelectionGrid.getChildren().remove(5);
+                    parentSelectionGrid.add(tournamentGrid, 0, 5);
+                } else {
+                    parentSelectionGrid.getChildren().remove(5);
+                    parentSelectionGrid.add(placeHolderGrid, 0, 5);
+                }
+            }
+        });
+
         parentSelectionGrid.add(parentSelectionLabel, 0, 0);
         parentSelectionGrid.add(fitnessProportionate, 0, 1);
         parentSelectionGrid.add(sigmaScaling, 0, 2);
         parentSelectionGrid.add(boltzmannSelection, 0, 3);
         parentSelectionGrid.add(tournamentSelection, 0, 4);
+        parentSelectionGrid.add(placeHolderGrid, 0, 5);
 
         GridPane generalSettingsGrid = new GridPane();
         generalSettingsGrid.setPrefSize(250, 200);
@@ -281,8 +356,12 @@ public class GUI {
                     Evolution.parentSelectionType = ParentSelection.ParentSelectionEnum.SIGMA_SCALING;
                 } else if (tournamentSelection.isSelected()) {
                     Evolution.parentSelectionType = ParentSelection.ParentSelectionEnum.TOURNAMENT_SELECTION;
+                    Evolution.TOURNAMENT_GROUP_SIZE = Integer.parseInt(groupSizeInput.getText());
+                    Evolution.TOURNAMENT_RANDOM_PROBABILITY = Double.parseDouble(probabilityInput.getText());
                 } else if (boltzmannSelection.isSelected()) {
                     Evolution.parentSelectionType = ParentSelection.ParentSelectionEnum.BOLTZMANN_SELECTION;
+                    Evolution.TEMPERATURE = Double.parseDouble(temperatureInput.getText());
+                    Evolution.TEMPERATURE_DECREASE = Double.parseDouble(decreaseInput.getText());
                 }
 
                 //Set mutation type

@@ -6,7 +6,7 @@ import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
 
-public class RouletteWheel {
+public class RouletteWheel implements ParentPool {
     private NavigableMap<Double, Individual> rouletteWheel = new TreeMap<Double, Individual>();
     private Random random = new Random();
     private double range;

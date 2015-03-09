@@ -10,6 +10,7 @@ import overskaug.evolution.population.Individual;
 import overskaug.evolution.population.Population;
 import overskaug.evolution.problems.Problem;
 import overskaug.evolution.selection.AdultSelection;
+import overskaug.evolution.selection.ParentPool;
 import overskaug.evolution.selection.ParentSelection;
 import overskaug.evolution.selection.RouletteWheel;
 import overskaug.evolution.util.FitnessCalculations;
@@ -22,6 +23,10 @@ public class Evolution {
     public static int MAX_GENERATIONS = 100;
     public static double CROSSOVER_RATE = 1;
     public static double MUTATION_RATE = 0.05;
+    public static double TEMPERATURE = 5;
+    public static double TEMPERATURE_DECREASE = 0.01;
+    public static int TOURNAMENT_GROUP_SIZE = 10;
+    public static double TOURNAMENT_RANDOM_PROBABILITY = 0.05;
 
     public static AdultSelection.AdultSelectionEnum adultSelectionType = AdultSelection.AdultSelectionEnum.FULL_GENERATIONAL_REPLACEMENT;
     public static ParentSelection.ParentSelectionEnum parentSelectionType = ParentSelection.ParentSelectionEnum.FITNESS_PROPORTIONATE;
@@ -55,21 +60,21 @@ public class Evolution {
             }
             population.clearChildren();
 
-            RouletteWheel rouletteWheel = null;
+            ParentPool parentPool = null;
             if (parentSelectionType.equals(ParentSelection.ParentSelectionEnum.FITNESS_PROPORTIONATE)) {
-                rouletteWheel = ParentSelection.fitnessProportionate(population.getAdults());
+                parentPool = ParentSelection.fitnessProportionate(population.getAdults());
             } else if (parentSelectionType.equals(ParentSelection.ParentSelectionEnum.SIGMA_SCALING)) {
-                rouletteWheel = ParentSelection.sigmaScaling(population.getAdults());
+                parentPool = ParentSelection.sigmaScaling(population.getAdults());
             } else if (parentSelectionType.equals(ParentSelection.ParentSelectionEnum.TOURNAMENT_SELECTION)) {
-                rouletteWheel = ParentSelection.tournamentSelection();
+                parentPool = ParentSelection.tournamentSelection(population.getAdults(), TOURNAMENT_GROUP_SIZE, TOURNAMENT_RANDOM_PROBABILITY);
             } else if (parentSelectionType.equals(ParentSelection.ParentSelectionEnum.BOLTZMANN_SELECTION)) {
-                rouletteWheel = ParentSelection.boltzmannSelection();
+                parentPool = ParentSelection.boltzmannSelection(population.getAdults(), TEMPERATURE - (TEMPERATURE_DECREASE * generations));
             }
 
             Crossover crossover = problem.getCrossover();
-            while (population.getChildren().size() <= REPRODUCTION_POOL_SIZE) {
-                Individual parent1 = rouletteWheel.nextParent();
-                Individual parent2 = rouletteWheel.nextParent();
+            while (population.getChildren().size() < REPRODUCTION_POOL_SIZE) {
+                Individual parent1 = parentPool.nextParent();
+                Individual parent2 = parentPool.nextParent();
                 try {
                     ArrayList<Individual> children = crossover.onePointCrossover(parent1, parent2, CROSSOVER_RATE);
                     Mutation mutation = problem.getMutation();
@@ -79,7 +84,7 @@ public class Evolution {
                         } else if (mutationType.equals(Mutation.MutationEnum.PER_GENE_MUTATION)) {
                             mutation.mutateAllComponents(child.getGenotype(), MUTATION_RATE);
                         }
-                        if (problem.isValidPhenotype(child.getPhenotype())) {
+                        if (problem.isValidPhenotype(child.getPhenotype()) && population.getChildren().size() != REPRODUCTION_POOL_SIZE) {
                             population.getChildren().add(child);
                         }
                     }
