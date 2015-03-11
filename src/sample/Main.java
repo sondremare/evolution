@@ -29,11 +29,5 @@ public class Main extends Application {
 
     public static void main(String[] args) throws Exception {
         launch(args);
-        int bitLength = 40;
-        OneMax problem = new OneMax(bitLength);
-        //LOLZPrefix problem = new LOLZPrefix(bitLength, 6);
-        //SurprisingSequences problem = new SurprisingSequences(10, 35, true);
-
-        //Evolution.run(problem);
     }
 }

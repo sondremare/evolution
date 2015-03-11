@@ -101,7 +101,7 @@ public class Evolution {
             System.out.println("*********************** generation: "+ generations +" **********************");
             System.out.println("Best fitness: " + FitnessCalculations.getBestFitness(population.getAdults()));
             System.out.println("Average fitness: "+ FitnessCalculations.getFitnessAverage(population.getAdults()));
-            System.out.println("Standard devitation: "+ FitnessCalculations.getFitnessAverage(population.getAdults()));
+            System.out.println("Standard devitation: "+ FitnessCalculations.getStandardDeviation(population.getAdults()));
             System.out.println("Best phenotype: "+FitnessCalculations.getBestIndividual(population.getAdults()).getPhenotype());
 
             generations++;
