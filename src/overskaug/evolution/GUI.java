@@ -1,4 +1,4 @@
-package sample;
+package overskaug.evolution;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

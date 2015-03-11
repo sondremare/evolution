@@ -1,20 +1,8 @@
-package sample;
+package overskaug.evolution;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import overskaug.evolution.Evolution;
-import overskaug.evolution.genotypes.BitVectorGenotype;
-import overskaug.evolution.phenotypes.IntegerPhenotype;
-import overskaug.evolution.problems.LOLZPrefix;
-import overskaug.evolution.problems.OneMax;
-import overskaug.evolution.problems.SurprisingSequences;
-import overskaug.evolution.util.Converter;
-import overskaug.evolution.util.FixedBitSet;
-
-import java.util.BitSet;
 
 public class Main extends Application {
 
