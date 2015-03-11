@@ -19,6 +19,8 @@ import overskaug.evolution.problems.SurprisingSequences;
 import overskaug.evolution.selection.AdultSelection;
 import overskaug.evolution.selection.ParentSelection;
 
+import java.util.ArrayList;
+
 public class GUI {
     private static Problem problem;
     private static LineChart plot;
@@ -130,7 +132,7 @@ public class GUI {
             }
         });
         controlButtonsGrid.add(startButton, 0, 0);
-        //controlButtonsGrid.add(clearButton, 1, 0);
+        controlButtonsGrid.add(clearButton, 1, 0);
 
         problemGrid.add(problemLabel, 0, 0);
         problemGrid.add(problemSelector, 0, 1);
@@ -316,7 +318,8 @@ public class GUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 //retainData();
-                clearPlot();
+                //clearPlot();
+                nextSeries();
 
                 //Set various constants
                 Evolution.MAXIMUM_POOL_SIZE = Integer.parseInt(populationSizeInput.getText());
@@ -389,29 +392,32 @@ public class GUI {
         lineChart.setAnimated(false);
         lineChart.setCreateSymbols(false);
         lineChart.setPrefSize(1000, 400);
-
-        Evolution.bestFitnessSeries = new XYChart.Series();
-        Evolution.bestFitnessSeries.setName("Best fitness");
-        Evolution.averageFitnesSeries = new XYChart.Series();
-        Evolution.averageFitnesSeries.setName("Average fitness");
-        Evolution.standardDeviationFitnessSeries = new XYChart.Series();
-        Evolution.standardDeviationFitnessSeries.setName("Standard deviation");
-        lineChart.getData().add(Evolution.bestFitnessSeries);
-        lineChart.getData().add(Evolution.averageFitnesSeries);
-        lineChart.getData().add(Evolution.standardDeviationFitnessSeries);
         return lineChart;
     }
 
     private static void clearPlot() {
-        if (Evolution.bestFitnessSeries.getData() != null) Evolution.bestFitnessSeries.getData().clear();
-        if (Evolution.averageFitnesSeries.getData() != null) Evolution.averageFitnesSeries.getData().clear();
-        if (Evolution.standardDeviationFitnessSeries.getData() != null) Evolution.standardDeviationFitnessSeries.getData().clear();
+        Evolution.bestFitnessSeriesList = new ArrayList<XYChart.Series>();
+        Evolution.averageFitnessSeriesList = new ArrayList<XYChart.Series>();
+        Evolution.standardDeviationFitnessSeriesList = new ArrayList<XYChart.Series>();
+        plot.getData().clear();
     }
 
-    private static void retainData() {
-        plot.getData().retainAll();
-        plot.getData().add(Evolution.bestFitnessSeries);
-        plot.getData().add(Evolution.averageFitnesSeries);
-        plot.getData().add(Evolution.standardDeviationFitnessSeries);
+    public static void nextSeries() {
+        int seriesNumber = Evolution.bestFitnessSeriesList.size();
+        XYChart.Series bestSeries = new XYChart.Series();
+        bestSeries.setName("Best " + seriesNumber);
+        Evolution.bestFitnessSeriesList.add(bestSeries);
+
+        XYChart.Series avgSeries = new XYChart.Series();
+        avgSeries.setName("AVG "+ seriesNumber);
+        Evolution.averageFitnessSeriesList.add(avgSeries);
+
+        XYChart.Series sdSeries = new XYChart.Series();
+        sdSeries.setName("SD "+ seriesNumber);
+        Evolution.standardDeviationFitnessSeriesList.add(sdSeries);
+
+        plot.getData().add(Evolution.bestFitnessSeriesList.get(seriesNumber));
+        plot.getData().add(Evolution.averageFitnessSeriesList.get(seriesNumber));
+        plot.getData().add(Evolution.standardDeviationFitnessSeriesList.get(seriesNumber));
     }
 }

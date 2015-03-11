@@ -33,9 +33,9 @@ public class Evolution {
     public static Mutation.MutationEnum mutationType = Mutation.MutationEnum.GENOME_MUTATION;
 
     //Workaround for dynamic plotting
-    public static XYChart.Series bestFitnessSeries;
-    public static XYChart.Series averageFitnesSeries;
-    public static XYChart.Series standardDeviationFitnessSeries;
+    public static ArrayList<XYChart.Series> bestFitnessSeriesList = new ArrayList<XYChart.Series>();
+    public static ArrayList<XYChart.Series> averageFitnessSeriesList = new ArrayList<XYChart.Series>();
+    public static ArrayList<XYChart.Series> standardDeviationFitnessSeriesList = new ArrayList<XYChart.Series>();
 
     public static void run(Problem problem) throws Exception {
         Population population = problem.getPopulation();
@@ -93,9 +93,10 @@ public class Evolution {
                 }
             }
             //Workaround for dynamic plotting
-            bestFitnessSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getBestFitness(population.getAdults())));
-            averageFitnesSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getFitnessAverage(population.getAdults())));
-            standardDeviationFitnessSeries.getData().add(new XYChart.Data(generations, FitnessCalculations.getStandardDeviation(population.getAdults())));
+            int series = Evolution.bestFitnessSeriesList.size() - 1;
+            Evolution.bestFitnessSeriesList.get(series).getData().add(new XYChart.Data(generations, FitnessCalculations.getBestFitness(population.getAdults())));
+            Evolution.averageFitnessSeriesList.get(series).getData().add(new XYChart.Data(generations, FitnessCalculations.getFitnessAverage(population.getAdults())));
+            Evolution.standardDeviationFitnessSeriesList.get(series).getData().add(new XYChart.Data(generations, FitnessCalculations.getStandardDeviation(population.getAdults())));
 
             System.out.println("*********************** generation: "+ generations +" **********************");
             System.out.println("Best fitness: " + FitnessCalculations.getBestFitness(population.getAdults()));
