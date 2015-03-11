@@ -28,7 +28,7 @@ public class GlobalSequenceFitness implements Fitness {
                     int distance = j - i;
                     int occurences = findOccurences(integers, first, second, distance);
                     if (occurences > 1) {
-                        sum += occurences;
+                        sum += (occurences - 1);
                     }
                 }
             }
